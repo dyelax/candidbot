@@ -7,6 +7,6 @@ os.chdir ("/home/pi/candidbot/images")
 camera = PiCamera()
 camera.start_preview()
 sleep(2)
-for filename in camera.capture_continuous('images/img{counter:03d}.jpg'):
+for filename in camera.capture_continuous('img{timestamp}.jpg'):
         print('Captured %s' % filename)
         sleep(1) # wait 5 minutes
