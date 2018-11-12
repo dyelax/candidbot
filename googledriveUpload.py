@@ -24,7 +24,11 @@ def main():
     camera.start_preview()
     sleep(2)
 
-    for filename in camera.capture_continuous('images/img{counter:03d}.jpg'):
+    FILES=['img004.jpg', 'img010.jpg']
+
+
+
+    #for filename in camera.capture_continuous('images/img{counter:03d}.jpg'):
         print('Captured %s' % filename)
         sleep(1)  # wait 5 minutes
         file_metadata = {'name': filename}
