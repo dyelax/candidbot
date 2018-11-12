@@ -19,7 +19,7 @@ def main():
     creds = store.get()
     if not creds or creds.invalid:
         flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
-        creds = tools.run_flow(flow, store)
+        creds = tools.run_flow(flow, store, flags='--noauth_local_webserver')
     DRIVE = discovery.build('drive', 'v3', http=creds.authorize(Http()))
 
     camera = PiCamera()
