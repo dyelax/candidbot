@@ -2,7 +2,7 @@ from __future__ import print_function
 from time import sleep
 from picamera import PiCamera
 import os
-os.chdir ("/home/pi/candidbot/images")
+
 
 from apiclient import discovery
 from httplib2 import Http
@@ -21,6 +21,7 @@ def main():
         creds = tools.run_flow(flow, store, flags='--noauth_local_webserver')
     DRIVE = discovery.build('drive', 'v3', http=creds.authorize(Http()))
 
+    os.chdir("/home/pi/candidbot/images")
     camera = PiCamera()
     camera.start_preview()
     sleep(2)
