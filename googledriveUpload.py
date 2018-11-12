@@ -1,7 +1,6 @@
+from __future__ import print_function
 from time import sleep
 from picamera import PiCamera
-
-from __future__ import print_function
 import os
 os.chdir ("/home/pi/candidbot/images")
 
