@@ -226,4 +226,5 @@ def test_img(path):
 
 if __name__ == '__main__':
   # test()
-  test_img('test.jpg')
+  for _ in range(20):
+    test_img('test.jpg')
