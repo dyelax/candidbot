@@ -5,6 +5,8 @@ coco.names
 *.cfg
 *.weights
 
+*.jpg
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
