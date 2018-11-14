@@ -28,7 +28,7 @@ def main():
 
     for filename in camera.capture_continuous('{timestamp}.jpg'):
         print('Captured %s' % filename)
-        sleep(1)  # wait 5 minutes
+        sleep(.1)  # wait 5 minutes
         metadata = {'name': filename}
         res = DRIVE.files().create(body=metadata, media_body=filename).execute()
         if res:
