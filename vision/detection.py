@@ -174,7 +174,56 @@ def test():
     # cv.imshow(winName, frame)
 
 
+def test_img(path):
+  img = cv.imread(path)
+  out_path = path[:-4] + '-processed.jpg'
 
+  # Create a 4D blob from a frame.
+  blob = cv.dnn.blobFromImage(img, 1 / 255, (inpWidth, inpHeight), [0, 0, 0], 1, crop=False)
+
+  # Sets the input to the network
+  net.setInput(blob)
+
+  # Runs the forward pass to get output of the output layers
+  outs = net.forward(getOutputsNames(net))
+
+  # Remove the bounding boxes with low confidence
+  postprocess(img, outs)
+
+  # Put efficiency information. The function getPerfProfile returns the overall time for inference(t) and the timings for each of the layers(in layersTimes)
+  t, _ = net.getPerfProfile()
+  perf_ms = t * 1000.0 / cv.getTickFrequency()
+  perf_fps = cv.getTickFrequency() / t
+  label = 'Inference time: %.2f ms | %.2f fps' % (perf_ms, perf_fps)
+  cv.putText(img, label, (0, 15), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255))
+  print(label)
+
+  cv.imwrite(out_path, img.astype(np.uint8))
+
+
+# def detect_img(img):
+#   # Create a 4D blob from a frame.
+#   blob = cv.dnn.blobFromImage(img, 1 / 255, (inpWidth, inpHeight), [0, 0, 0], 1, crop=False)
+#
+#   # Sets the input to the network
+#   net.setInput(blob)
+#
+#   # Runs the forward pass to get output of the output layers
+#   outs = net.forward(getOutputsNames(net))
+#
+#   # Remove the bounding boxes with low confidence
+#   postprocess(img, outs)
+#
+#   # Put efficiency information. The function getPerfProfile returns the overall time for inference(t) and the timings for each of the layers(in layersTimes)
+#   t, _ = net.getPerfProfile()
+#   perf_ms = t * 1000.0 / cv.getTickFrequency()
+#   perf_fps = cv.getTickFrequency() / t
+#   label = 'Inference time: %.2f ms | %.2f fps' % (perf_ms, perf_fps)
+#   cv.putText(img, label, (0, 15), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255))
+#   print(label)
+#
+#
 
 if __name__ == '__main__':
-  test()
+  # test()
+  test_img('test.jpg')
