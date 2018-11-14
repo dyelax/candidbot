@@ -39,7 +39,7 @@ def getOutputsNames(net):
 
 
 # Draw the predicted bounding box
-def drawPred(classId, conf, left, top, right, bottom):
+def drawPred(frame, classId, conf, left, top, right, bottom):
   # Draw a bounding box.
   cv.rectangle(frame, (left, top), (right, bottom), (255, 178, 50), 3)
 
@@ -98,7 +98,7 @@ def postprocess(frame, outs):
     width = box[2]
     height = box[3]
     print(left, top, width, height)
-    drawPred(classIds[i], confidences[i], left, top, left + width, top + height)
+    drawPred(frame, classIds[i], confidences[i], left, top, left + width, top + height)
 
 
 def test():
@@ -161,18 +161,19 @@ def test():
 
     # Put efficiency information. The function getPerfProfile returns the overall time for inference(t) and the timings for each of the layers(in layersTimes)
     t, _ = net.getPerfProfile()
-    label = 'Inference time: %.2f ms | %.2f fps' % (
-    (t * 1000.0 / cv.getTickFrequency()), cv.getTickFrequency() / t)
+    label = 'Inference time: %.2f ms | %.2f fps' % ((t * 1000.0 / cv.getTickFrequency()), cv.getTickFrequency() / t)
     cv.putText(frame, label, (0, 15), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255))
     print(label)
 
     # Write the frame with the detection boxes
     if (args.image):
-      cv.imwrite(outputFile, frame.astype(np.uint8));
+      cv.imwrite(outputFile, frame.astype(np.uint8))
     else:
       vid_writer.write(frame.astype(np.uint8))
 
     # cv.imshow(winName, frame)
+
+
 
 
 if __name__ == '__main__':
