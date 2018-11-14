@@ -25,14 +25,17 @@ def main():
     camera = PiCamera()
     camera.start_preview()
     sleep(2)
-
+    counter = 0
     for filename in camera.capture_continuous('{timestamp}.jpg'):
+        counter += 1
         print('Captured %s' % filename)
-        sleep(1)  # wait 5 minutes
+        sleep(.1)
         metadata = {'name': filename}
         res = DRIVE.files().create(body=metadata, media_body=filename).execute()
         if res:
             print('Uploaded "%s" (%s)' % (filename, res['mimeType']))
+        if counter > 10:
+            exit()
 
 if __name__ == '__main__':
     main()
