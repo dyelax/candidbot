@@ -123,7 +123,7 @@ class YOLOv3Detector:
       center_x = left + (width / 2)
       center_y = top + (height / 2)
 
-      centers.append((center_x, center_y))
+      centers.append(np.array([[center_x], [center_y]]))
 
     return centers
 
