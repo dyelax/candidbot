@@ -115,6 +115,18 @@ class YOLOv3Detector:
 
     return preds, out_img
 
+  @staticmethod
+  def get_centers(preds):
+    centers = []
+    for pred in preds:
+      left, top, width, height = pred
+      center_x = left + (width / 2)
+      center_y = top + (height / 2)
+
+      centers.append((center_x, center_y))
+
+    return centers
+
 
 def test():
   parser = argparse.ArgumentParser(description='Object Detection using YOLO in OPENCV')
@@ -129,14 +141,14 @@ def test():
   cv.namedWindow(winName, cv.WINDOW_NORMAL)
 
   outputFile = "yolo_out_py.avi"
-  if (args.image):
+  if args.image:
     # Open the image file
     if not os.path.isfile(args.image):
       print("Input image file ", args.image, " doesn't exist")
       sys.exit(1)
     cap = cv.VideoCapture(args.image)
     outputFile = args.image[:-4] + '_yolo_out_py.jpg'
-  elif (args.video):
+  elif args.video:
     # Open the video file
     if not os.path.isfile(args.video):
       print("Input video file ", args.video, " doesn't exist")
@@ -148,7 +160,7 @@ def test():
     cap = cv.VideoCapture(0)
 
   # Get the video writer initialized to save the output video
-  if (not args.image):
+  if not args.image:
     vid_writer = cv.VideoWriter(outputFile, cv.VideoWriter_fourcc('M', 'J', 'P', 'G'), 30, (
       round(cap.get(cv.CAP_PROP_FRAME_WIDTH)), round(cap.get(cv.CAP_PROP_FRAME_HEIGHT))))
 
@@ -183,6 +195,7 @@ def test_img(path):
   preds, out_img = detector.detect_img(img)
 
   print(preds)
+  print(detector.get_centers(preds))
   cv.imwrite(out_path, out_img)
 
 if __name__ == '__main__':
