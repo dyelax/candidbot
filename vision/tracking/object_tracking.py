@@ -11,9 +11,8 @@
 # Import python libraries
 import cv2
 import copy
-from detectors import Detectors
-from tracker import Tracker
-
+from vision.tracking.tracker import Tracker
+from vision.detection.yolov3_detector import YOLOv3Detector
 
 def main():
     """Main function for multi object tracking
@@ -34,7 +33,7 @@ def main():
     cap = cv2.VideoCapture('data/TrackingBugs.mp4')
 
     # Create Object Detector
-    detector = Detectors()
+    detector = YOLOv3Detector()
 
     # Create Object Tracker
     tracker = Tracker(160, 30, 5, 100)
@@ -63,8 +62,7 @@ def main():
         centers = detector.Detect(frame)
 
         # If centroids are detected then track them
-        if (len(centers) > 0):
-
+        if len(centers) > 0:
             # Track object using Kalman Filter
             tracker.Update(centers)
 
