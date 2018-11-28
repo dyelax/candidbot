@@ -8,9 +8,7 @@
     Python Version    : 2.7
 '''
 
-# Import python libraries
 import cv2
-import copy
 from vision.tracking.tracker import Tracker
 from vision.detection.yolov3_detector import YOLOv3Detector
 
@@ -51,52 +49,21 @@ def draw_boxes(frame, track, color):
 
 
 def main():
-  """Main function for multi object tracking
-  Usage:
-      $ python2.7 objectTracking.py
-  Pre-requisite:
-      - Python2.7
-      - Numpy
-      - SciPy
-      - Opencv 3.0 for Python
-  Args:
-      None
-  Return:
-      None
-  """
-
   # Create opencv video capture object
   cap = cv2.VideoCapture('test/tracking.mov')
 
-  # Create Object Detector
   detector = YOLOv3Detector()
-
-  # Create Object Tracker
   tracker = Tracker(160, 30, 5, 100)
 
-  # Variables initialization
-  pause = False
-
-  # Infinite loop to process video frames
   while True:
     # Capture frame-by-frame
     ret, frame = cap.read()
 
-    # Make copy of original frame
-    orig_frame = copy.copy(frame)
-
-    # Detect the objects in the frame
     box_preds, _ = detector.detect_img(frame)
-
-    # If centroids are detected then track them
-    if len(box_preds) > 0:
-      # Track object using Kalman Filter
-      tracker.Update(box_preds)
+    tracker.Update(box_preds)
 
     draw_tracks(frame, tracker)
-
     cv2.imshow('Tracking', frame)
-    cv2.imshow('Original', orig_frame)
 
     # Slow the FPS
     cv2.waitKey(10)
@@ -107,5 +74,4 @@ def main():
 
 
 if __name__ == "__main__":
-  # execute main
   main()
