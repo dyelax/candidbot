@@ -20,7 +20,6 @@ def draw_tracks(frame, tracker):
 
   for track in tracker.tracks:
     color = track_colors[track.track_id % len(track_colors)]
-    print(color)
     draw_trace(frame, track, color)
     draw_boxes(frame, track, color)
 
