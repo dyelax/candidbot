@@ -9,6 +9,7 @@
 '''
 
 import cv2
+import numpy as np
 from vision.tracking.tracker import Tracker
 from vision.detection.yolov3_detector import YOLOv3Detector
 
@@ -54,6 +55,12 @@ def main():
   detector = YOLOv3Detector()
   tracker = Tracker(160, 30, 5, 100)
 
+  vid_writer = cv2.VideoWriter(
+    'test/tracking-processed.mp4',
+    cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),
+    30,
+    (round(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), round(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))))
+
   while True:
     # Capture frame-by-frame
     ret, frame = cap.read()
@@ -62,10 +69,13 @@ def main():
     tracker.Update(box_preds)
 
     draw_tracks(frame, tracker)
-    cv2.imshow('Tracking', frame)
+    # cv2.imshow('Tracking', frame)
 
     # Slow the FPS
     cv2.waitKey(10)
+
+    vid_writer.write(frame.astype(np.uint8))
+
 
   # When everything done, release the capture
   cap.release()
