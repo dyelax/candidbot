@@ -1,36 +1,27 @@
-import argparse
-from datetime import datetime
+from mvnc import mvncapi as mvnc
 
-from ObjectWrapper import *
-from Visualize import *
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--graph', dest='graph', type=str,
-                        default='graph', help='MVNC graphs.')
-    parser.add_argument('--image', dest='image', type=str,
-                        default='./images/dog.jpg', help='An image path.')
-    args = parser.parse_args()
+    # grab a list of all NCS devices plugged in to USB
+    print("[INFO] finding NCS devices...")
+    devices = mvnc.EnumerateDevices()
 
-    network_blob=args.graph
-    imagefile = args.image
-    videofile = args.video
+    # if no devices found, exit the script
+    if len(devices) == 0:
+      print("[INFO] No devices found. Please plug in a NCS")
+      quit()
 
-    detector = ObjectWrapper(network_blob)
-    stickNum = ObjectWrapper.devNum
+    # use the first device since this is a simple test script
+    print("[INFO] found {} devices. device0 will be used. "
+      "opening device0...".format(len(devices)))
+    device = mvnc.Device(devices[0])
+    device.OpenDevice()
 
-    # image preprocess
-    img = cv2.imread(imagefile)
-    start = datetime.now()
+    # open the CNN graph file
+    print("[INFO] loading the graph file into RPi memory...")
+    with open('yolov2.graph', mode="rb") as f:
+      graph_in_memory = f.read()
 
-    results = detector.Detect(img)
-
-    end = datetime.now()
-    elapsedTime = end-start
-
-    print ('total time is " milliseconds', elapsedTime.total_seconds()*1000)
-
-    imdraw = Visualize(img, results)
-    # cv2.imshow('Demo',imdraw)
-    cv2.imwrite('test.jpg',imdraw)
-    cv2.waitKey(10000)
+    # load the graph into the NCS
+    print("[INFO] allocating the graph on the NCS...")
+    graph = device.AllocateGraph(graph_in_memory)
