@@ -41,23 +41,24 @@ if __name__ == '__main__':
 
   print(graph)
 
-  image_orig = cv2.imread('../../../test/test3.jpg')
-  image = image_orig.copy()
-  image = cv2.resize(image, (416, 416))
-  image = image.astype(np.float32)
+  for i in range(30):
+    image_orig = cv2.imread('../../../test/test%d.jpg' % (i % 3 + 1))
+    image = image_orig.copy()
+    image = cv2.resize(image, (416, 416))
+    image = image.astype(np.float32)
 
-  start = time()
-  graph.queue_inference_with_fifo_elem(input_fifo, output_fifo, image, None)
-  (preds, userobj) = output_fifo.read_elem()
-  end = time()
-  print("[INFO] classification took {:.5} seconds".format(end - start))
+    start = time()
+    graph.queue_inference_with_fifo_elem(input_fifo, output_fifo, image, None)
+    (preds, userobj) = output_fifo.read_elem()
+    end = time()
+    print("[INFO] inference took {:.5} seconds".format(end - start))
 
-  print(preds)
+    print(preds)
 
   # clean up the graph and device
-  graph.destroy()
   input_fifo.destroy()
   output_fifo.destroy()
+  graph.destroy()
   device.close()
   device.destroy()
 
