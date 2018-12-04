@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
   for i in range(30):
     image_orig = cv2.imread('../../../test/test%d.jpg' % (i % 3 + 1))
-    image = image_orig.copy()
+    # image = image_orig.copy()
     image = cv2.resize(image, (416, 416))
     image = image.astype(np.float32)
 
@@ -51,8 +51,10 @@ if __name__ == '__main__':
     graph.queue_inference_with_fifo_elem(input_fifo, output_fifo, image, None)
     (preds, userobj) = output_fifo.read_elem()
     end = time()
+
     print("[INFO] inference took {:.5} seconds".format(end - start))
 
+    print(len(preds))
     print(preds)
 
   # clean up the graph and device
@@ -61,8 +63,3 @@ if __name__ == '__main__':
   graph.destroy()
   device.close()
   device.destroy()
-
-  # # sort the indexes of the probabilities in descending order (higher
-  # # probabilitiy first) and grab the top-5 predictions
-  # preds = preds.reshape((1, len(classes)))
-  # idxs = np.argsort(preds[0])[::-1][:5]
