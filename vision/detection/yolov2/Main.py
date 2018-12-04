@@ -42,7 +42,7 @@ if __name__ == '__main__':
   print(graph)
 
   for i in range(30):
-    image_orig = cv2.imread('../../../test/test%d.jpg' % (i % 3 + 1))
+    image = cv2.imread('../../../test/test%d.jpg' % (i % 3 + 1))
     # image = image_orig.copy()
     image = cv2.resize(image, (416, 416))
     image = image.astype(np.float32)
