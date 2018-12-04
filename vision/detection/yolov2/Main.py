@@ -48,7 +48,7 @@ if __name__ == '__main__':
 
   start = time()
   graph.queue_inference_with_fifo_elem(input_fifo, output_fifo, image, None)
-  (preds, userobj) = graph.GetResult()
+  (preds, userobj) = output_fifo.read_elem()
   end = time()
   print("[INFO] classification took {:.5} seconds".format(end - start))
 
