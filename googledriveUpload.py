@@ -29,12 +29,11 @@ def main():
     for filename in camera.capture_continuous('{timestamp}.jpg'):
         counter += 1
         print('Captured %s' % filename)
-        sleep(.1)  # wait 5 minutes
         metadata = {'name': filename}
         res = DRIVE.files().create(body=metadata, media_body=filename).execute()
         if res:
             print('Uploaded "%s" (%s)' % (filename, res['mimeType']))
-        if counter > 10:
+        if counter > 30:
             exit()
 
 if __name__ == '__main__':
