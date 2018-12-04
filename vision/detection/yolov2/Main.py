@@ -32,10 +32,10 @@ if __name__ == '__main__':
   input_fifo, output_fifo = graph.allocate_with_fifos(
     device, graph_in_memory,
     input_fifo_type=mvnc.FifoType.HOST_WO,
-    input_fifo_num_elem=2,
+    input_fifo_num_elem=30,
     input_fifo_data_type=mvnc.FifoDataType.FP32,
     output_fifo_type=mvnc.FifoType.HOST_RO,
-    output_fifo_num_elem=2,
+    output_fifo_num_elem=30,
     output_fifo_data_type=mvnc.FifoDataType.FP32
   )
 
