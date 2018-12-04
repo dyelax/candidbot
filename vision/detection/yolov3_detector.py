@@ -3,7 +3,7 @@
 
 import cv2 as cv
 import numpy as np
-
+from time import time
 
 HUMAN_ID = 0
 
@@ -65,25 +65,37 @@ class YOLOv3Detector:
 
   def detect_img(self, img):
     # Create a 4D blob from a frame.
+    all_start = time()
     blob = cv.dnn.blobFromImage(img, 1 / 255, (self.in_width, self.in_height), [0, 0, 0], 1, crop=False)
+    blob_time = time() - all_start
 
     # Sets the input to the self.network
     self.net.setInput(blob)
 
     # Runs the forward pass to get output of the output layers
+    preds_start = time()
     preds_raw = self.net.forward(self.output_names)
+    pred_time = time() - preds_start
 
     # Remove the bounding boxes with low confidence
+    post_start = time()
     preds = self.postprocess(img, preds_raw)
+    post_time = time() - post_start
 
     # Put efficiency information. The function getPerfProfile returns the overall time for
     # inference(t) and the timings for each of the layers(in layersTimes)
-    t, _ = self.net.getPerfProfile()
-    perf_ms = t * 1000.0 / cv.getTickFrequency()
-    perf_fps = cv.getTickFrequency() / t
-    label = 'Inference time: %.2f ms | %.2f fps' % (perf_ms, perf_fps)
+    all_time = time() - all_start
+    all_fps = 1 / all_time
+    label = 'Inference time: %.2f ms | %.2f fps' % (all_time / 1000, all_fps)
     cv.putText(img, label, (0, 15), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255))
-    print(label)
+    # print(label)
+
+    # print('-'*30)
+    # print('All  fps :', all_fps)
+    # print('All  time:', all_time)
+    # print('Blob time:', blob_time)
+    # print('Pred time:', pred_time)
+    # print('Post time:', post_time)
 
     out_img = img.astype(np.uint8)
 

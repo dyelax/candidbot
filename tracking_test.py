@@ -10,6 +10,8 @@
 
 import cv2
 import numpy as np
+from time import time
+
 from vision.tracking.tracker import Tracker
 from vision.detection.yolov3_detector import YOLOv3Detector
 
@@ -62,12 +64,19 @@ def main():
     (round(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), round(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))))
 
   while True:
+    all_start = time()
     # Capture frame-by-frame
     ret, frame = cap.read()
+    cap_time = time() - all_start
 
+    det_start = time()
     box_preds, _ = detector.detect_img(frame)
+    det_time = time() - det_start
+    track_start = time()
     tracker.Update(box_preds)
+    track_time = time() - track_start
 
+    misc_start = time()
     draw_tracks(frame, tracker)
     # cv2.imshow('Tracking', frame)
 
@@ -75,6 +84,16 @@ def main():
     cv2.waitKey(10)
 
     vid_writer.write(frame.astype(np.uint8))
+    misc_time = time() - misc_start
+    all_time = time() - all_start
+
+    print('-'*30)
+    print('All fps :', 1 / all_time)
+    print('All time:', all_time)
+    print('Cap time:', cap_time)
+    print('Det time:', det_time)
+    print('Trk time:', track_time)
+    print('Msc time:', misc_time)
 
 
   # When everything done, release the capture
