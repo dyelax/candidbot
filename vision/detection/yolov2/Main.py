@@ -1,8 +1,8 @@
 import argparse
 from datetime import datetime
 
-from vision.detection.yolov2.ObjectWrapper import *
-from vision.detection.yolov2.Visualize import *
+from ObjectWrapper import *
+from Visualize import *
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
