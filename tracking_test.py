@@ -89,11 +89,13 @@ def main():
 
     print('-'*30)
     print('All fps :', 1 / all_time)
-    print('All time:', all_time)
-    print('Cap time:', cap_time)
-    print('Det time:', det_time)
-    print('Trk time:', track_time)
-    print('Msc time:', misc_time)
+    print('Det fps :', 1 / det_time)
+    # print('---')
+    # print('All time:', all_time)
+    # print('Cap time:', cap_time)
+    # print('Det time:', det_time)
+    # print('Trk time:', track_time)
+    # print('Msc time:', misc_time)
 
 
   # When everything done, release the capture
