@@ -52,12 +52,15 @@ if __name__ == '__main__':
   end = time()
   print("[INFO] classification took {:.5} seconds".format(end - start))
 
+  print(preds)
+
   # clean up the graph and device
   graph.destroy()
+  input_fifo.destroy()
+  output_fifo.destroy()
   device.close()
   device.destroy()
 
-  print(preds)
   # # sort the indexes of the probabilities in descending order (higher
   # # probabilitiy first) and grab the top-5 predictions
   # preds = preds.reshape((1, len(classes)))
