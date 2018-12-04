@@ -4,7 +4,7 @@ from mvnc import mvncapi as mvnc
 if __name__ == '__main__':
     # grab a list of all NCS devices plugged in to USB
     print("[INFO] finding NCS devices...")
-    devices = mvnc.EnumerateDevices()
+    devices = mvnc.enumerate_devices()
 
     # if no devices found, exit the script
     if len(devices) == 0:
@@ -15,7 +15,7 @@ if __name__ == '__main__':
     print("[INFO] found {} devices. device0 will be used. "
       "opening device0...".format(len(devices)))
     device = mvnc.Device(devices[0])
-    device.OpenDevice()
+    device.open()
 
     # open the CNN graph file
     print("[INFO] loading the graph file into RPi memory...")
@@ -24,4 +24,7 @@ if __name__ == '__main__':
 
     # load the graph into the NCS
     print("[INFO] allocating the graph on the NCS...")
-    graph = device.AllocateGraph(graph_in_memory)
+    graph = mvnc.Graph('YOLOv2')
+    graph.allocate(device, graph_in_memory)
+
+    print(graph)
