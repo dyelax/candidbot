@@ -1,7 +1,8 @@
+import cv2
+import numpy as np
 from os import remove
 from time import time
 
-import cv2
 from picamera import PiCamera
 
 from vision.detection.yolov3.yolov3_detector import YOLOv3Detector
@@ -38,11 +39,17 @@ class CandidbotController:
   def handle_frame(self, frame):
     self.update_detector_and_tracker(frame)
 
-    if self.should_take_photo():
-      self.take_photo()
-      self.target = None
+    if self.target is None:
+      if len(self.tracker.tracks) > 0:
+        self.target = np.random.choice(self.tracker.tracks)
+      else:
+        turn_90()
     else:
-      self.move_to_target()
+      if self.should_take_photo():
+        self.take_photo()
+        self.target = None
+      else:
+        self.move_to_target()
 
   def update_detector_and_tracker(self, frame):
     all_start = time()
@@ -84,10 +91,6 @@ class CandidbotController:
     self.uploader.upload(file_path)
 
   def move_to_target(self):
-    if self.target is None:
-      self.find_new_target()
-      return
-
     frame_center = self.frame_width / 2
     left_thresh = frame_center - self.center_thresh
     right_thresh = frame_center + self.center_thresh
@@ -106,8 +109,6 @@ class CandidbotController:
 
 
   def nav_continuous(self):
-    self.find_new_target()
-
     # TODO: work directly with a file buffer instead of saving/loading to disk if this is a bottleneck
     for file_path in self.camera.capture_continuous('/tmp/{timestamp}.jpg'):
       frame = cv2.imread(file_path)

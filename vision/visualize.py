@@ -33,3 +33,11 @@ def draw_boxes(frame, track, color):
 
   # Draw a bounding box.
   cv2.rectangle(frame, (left, top), (right, bottom), color, 3)
+
+
+def transparent_fill_region(frame, left, top, right, bottom, color):
+  overlay = frame.copy()
+  cv2.rectangle(overlay, (left, top), (right, bottom), color, cv2.CV_FILLED)
+
+  cv2.addWeighted(frame, 1, overlay, 0.3, 0)
+
