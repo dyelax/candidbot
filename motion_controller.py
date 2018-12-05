@@ -16,7 +16,7 @@ def turn_left():
     gpio.output(22, False)
     gpio.output(23, False)
     gpio.output(24, True)
-    time.sleep(1)
+    time.sleep(.2)
     gpio.cleanup()
 
 
@@ -27,7 +27,7 @@ def turn_right():
     gpio.output(22, True)
     gpio.output(23, True)
     gpio.output(24, False)
-    time.sleep(1)
+    time.sleep(.2)
     gpio.cleanup()
 
 def turn_90():
@@ -37,7 +37,7 @@ def turn_90():
     gpio.output(22, False)
     gpio.output(23, False)
     gpio.output(24, True)
-    time.sleep(4)
+    time.sleep(2)
     gpio.cleanup()
 
 def go_forward():

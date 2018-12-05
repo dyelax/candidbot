@@ -16,7 +16,7 @@ def turn_left():
     gpio.output(22, False)
     gpio.output(23, False)
     gpio.output(24, True)
-    time.sleep(1)
+    time.sleep(.2)
     gpio.cleanup()
 
 
@@ -27,7 +27,7 @@ def turn_right():
     gpio.output(22, True)
     gpio.output(23, True)
     gpio.output(24, False)
-    time.sleep(1)
+    time.sleep(.2)
     gpio.cleanup()
 
 def turn_90():
@@ -37,7 +37,7 @@ def turn_90():
     gpio.output(22, False)
     gpio.output(23, False)
     gpio.output(24, True)
-    time.sleep(4)
+    time.sleep(2)
     gpio.cleanup()
 
 def go_forward():
@@ -47,7 +47,7 @@ def go_forward():
     gpio.output(22, False)
     gpio.output(23, True)
     gpio.output(24, False)
-    time.sleep(10)
+    time.sleep(1)
     gpio.cleanup()
 
 
@@ -68,3 +68,13 @@ def proximity_warning():
   pass
 
 go_forward()
+time.sleep(2)
+turn_right()
+turn_right()
+turn_right()
+time.sleep(2)
+turn_left()
+time.sleep(2)
+go_backward()
+time.sleep(2)
+turn_90()
