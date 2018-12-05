@@ -17,20 +17,19 @@ from drive_uploader import DriveUploader
 
 class CandidbotController:
   def __init__(self):
+    self.frame_height = 1280
+    self.frame_width = 720
+
     self.detector = YOLOv3Detector()
     self.tracker = Tracker(160, 30, 5, 100)
-    self.camera = PiCamera()
+    self.camera = PiCamera(resolution=(self.frame_width, self.frame_height))
     # camera.start_preview()  # Displays camera output
 
     self.target = None  # The track we want to take a picture of
 
-    # TODO: Figure out if boxes given relative to in_height or original frame dims
-    self.frame_height = self.detector.in_height
-    self.frame_width = self.detector.in_width
-
     # The threshold from the bottom of the frame inside which we consider a target close enough to
     # photograph
-    self.dist_thresh = self.frame_height / 10
+    self.dist_thresh = self.frame_height / 8
     # The threshold on either side of the frame center inside which we consider an target "centered"
     self.center_thresh = self.frame_width / 6
 

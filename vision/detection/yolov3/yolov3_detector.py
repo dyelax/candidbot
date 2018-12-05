@@ -22,8 +22,8 @@ class YOLOv3Detector:
       self.classes = f.read().rstrip('\n').split('\n')
 
     # Give the configuration and weight files for the model and load the network using them.
-    self.net = cv.dnn.readNetFromDarknet("vision/detection/yolov3-tiny.cfg",
-                                         "vision/detection/yolov3-tiny.weights")
+    self.net = cv.dnn.readNetFromDarknet("vision/detection/yolov3/yolov3-tiny.cfg",
+                                         "vision/detection/yolov3/yolov3-tiny.weights")
     self.net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)
     self.net.setPreferableTarget(cv.dnn.DNN_TARGET_CPU)
 

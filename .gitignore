@@ -1,7 +1,7 @@
 *.xml
 .idea
 
-vision/detection/yolov3/coco.names
+vision/detection/coco.names
 *.cfg
 *.weights
 

@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 
 
 def draw_tracks(frame, tracker):
@@ -35,9 +36,9 @@ def draw_boxes(frame, track, color):
   cv2.rectangle(frame, (left, top), (right, bottom), color, 3)
 
 
-def transparent_fill_region(frame, left, top, right, bottom, color):
-  overlay = frame.copy()
-  cv2.rectangle(overlay, (left, top), (right, bottom), color, cv2.CV_FILLED)
+def draw_region(frame, top_left, bottom_right, color):
+  overlay = np.zeros_like(frame)
+  cv2.rectangle(overlay, top_left, bottom_right, color, -1)
 
-  cv2.addWeighted(frame, 1, overlay, 0.3, 0)
+  cv2.addWeighted(frame, 1, overlay, 0.5, 0, frame)
 
