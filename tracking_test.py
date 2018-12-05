@@ -8,12 +8,13 @@
     Python Version    : 2.7
 '''
 
-import cv2
-import numpy as np
 from time import time
 
+import cv2
+import numpy as np
+
+from vision.detection.yolov3.yolov3_detector import YOLOv3Detector
 from vision.tracking.tracker import Tracker
-from vision.detection.yolov3_detector import YOLOv3Detector
 
 
 def draw_tracks(frame, tracker):
@@ -78,7 +79,7 @@ def main():
 
     misc_start = time()
     draw_tracks(frame, tracker)
-    # cv2.imshow('Tracking', frame)
+    cv2.imshow('Tracking', frame)
 
     # Slow the FPS
     cv2.waitKey(10)
