@@ -42,19 +42,9 @@ class CandidbotController:
     cv2.setWindowProperty(self.window_name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
   def handle_frame(self, frame, debug_display=True):
-    print(frame.shape)
     # If we aren't showing debug display, show the frame before detector and tracker annotations are
     # added. Otherwise, show the frame after they are added.
     if not debug_display:
-      # Draw navigation regions
-      center_x = int(self.frame_width / 2)
-      photo_region = (
-        (0, self.frame_height - self.dist_thresh), (self.frame_width, self.frame_height))
-      center_region = (
-        (center_x - self.center_thresh, 0), (center_x + self.center_thresh, self.frame_height))
-
-      draw_region(frame, photo_region[0], photo_region[1], (0, 0, 255))
-      draw_region(frame, center_region[0], center_region[1], (0, 255, 0))
       cv2.imshow(self.window_name, frame)
       cv2.waitKey(10)
 
@@ -71,7 +61,7 @@ class CandidbotController:
         turn_90()
     else:
       if self.should_take_photo():
-        self.take_photo()
+        self.take_photo(frame)
         self.target = None
       else:
         self.move_to_target()
