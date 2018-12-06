@@ -61,6 +61,10 @@ class CandidbotController:
       draw_region(frame, photo_region[0], photo_region[1], (0, 0, 255))
       draw_region(frame, center_region[0], center_region[1], (0, 255, 0))
 
+      # Draw green circle on target
+      center = self.tracker.get_centroid(self.target.box)
+      cv2.circle(frame, center, 20, (0, 255, 0), -1)
+
       cv2.imshow(self.window_name, frame)
       cv2.waitKey(10)
 
