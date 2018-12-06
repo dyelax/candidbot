@@ -46,11 +46,13 @@ class CandidbotController:
     # added. Otherwise, show the frame after they are added.
     if not debug_display:
       cv2.imshow(self.window_name, frame)
+      cv2.waitKey(10)
 
     self.update_detector_and_tracker(frame)
 
     if debug_display:
       cv2.imshow(self.window_name, frame)
+      cv2.waitKey(10)
 
     if self.target is None:
       if len(self.tracker.tracks) > 0:
