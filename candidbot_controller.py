@@ -65,7 +65,7 @@ class CandidbotController:
       if self.target:
         left, top, width, height = self.target.box
         center_x = int(left + (width / 2))
-        center_y = (top + (height / 2))
+        center_y = int(top + (height / 2))
         cv2.circle(frame, (center_x, center_y), 20, (0, 255, 0), -1)
 
       cv2.imshow(self.window_name, frame)
