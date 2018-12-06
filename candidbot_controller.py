@@ -18,8 +18,8 @@ from drive_uploader import DriveUploader
 
 class CandidbotController:
   def __init__(self):
-    self.frame_height = 1280
-    self.frame_width = 720
+    self.frame_height = 480
+    self.frame_width = 800
 
     self.detector = YOLOv3Detector()
     self.tracker = Tracker(160, 30, 5, 100)
@@ -36,8 +36,21 @@ class CandidbotController:
 
     self.uploader = DriveUploader()
 
-  def handle_frame(self, frame):
+    # Set up a fullscreen display to show camera output.
+    self.window_name = 'display-window'
+    cv2.namedWindow(self.window_name, cv2.WND_PROP_FULLSCREEN)
+    cv2.setWindowProperty(self.window_name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+
+  def handle_frame(self, frame, debug_display=False):
+    # If we aren't showing debug display, show the frame before detector and tracker annotations are
+    # added. Otherwise, show the frame after they are added.
+    if not debug_display:
+      cv2.imshow(self.window_name, frame)
+
     self.update_detector_and_tracker(frame)
+
+    if debug_display:
+      cv2.imshow(self.window_name, frame)
 
     if self.target is None:
       if len(self.tracker.tracks) > 0:
@@ -63,7 +76,6 @@ class CandidbotController:
 
     misc_start = time()
     draw_tracks(frame, self.tracker)
-    # cv2.imshow('Tracking', frame)
 
     misc_time = time() - misc_start
     all_time = time() - all_start
