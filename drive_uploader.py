@@ -5,8 +5,8 @@ from oauth2client import file, client, tools
 SCOPES = 'https://www.googleapis.com/auth/drive'
 
 
-import asyncio
-from aiogoogle import Aiogoogle
+# import asyncio
+# from aiogoogle import Aiogoogle
 
 
 
@@ -25,15 +25,15 @@ class DriveUploader:
       'expires_at': self.creds.token_expiry,
     }
 
-  def upload_async(self, file_path):
-    async def get_res():
-      async with Aiogoogle(user_creds=self.async_creds) as aiogoogle:
-        drive_v3 = await aiogoogle.discover('drive', 'v3')
-        res = await aiogoogle.as_user(drive_v3.files.create(upload_file=file_path))
-        if res:
-          print('Uploaded "%s" (%s)' % (file_path, res['mimeType']))
-
-    asyncio.run(get_res())
+  # def upload_async(self, file_path):
+  #   async def get_res():
+  #     async with Aiogoogle(user_creds=self.async_creds) as aiogoogle:
+  #       drive_v3 = await aiogoogle.discover('drive', 'v3')
+  #       res = await aiogoogle.as_user(drive_v3.files.create(upload_file=file_path))
+  #       if res:
+  #         print('Uploaded "%s" (%s)' % (file_path, res['mimeType']))
+  #
+  #   asyncio.run(get_res())
 
   def upload(self, file_path):
     metadata = {'name': file_path}
