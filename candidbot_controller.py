@@ -28,6 +28,10 @@ class CandidbotController:
 
     self.target = None  # The track we want to take a picture of
 
+    # Spend max_search_frames looking for a target before moving to a new position
+    self.search_frames = 0
+    self.max_search_frames = 4
+
     # The threshold from the bottom of the frame inside which we consider a target close enough to
     # photograph
     self.dist_thresh = int(self.frame_height / 20)
@@ -74,8 +78,12 @@ class CandidbotController:
     if self.target is None:
       if len(self.tracker.tracks) > 0:
         self.target = np.random.choice(self.tracker.tracks)
-      else:
+        self.search_frames = 0
+      elif self.search_frames > self.max_search_frames:
         turn_90()
+        self.search_frames = 0
+      else:
+        self.search_frames += 1
     else:
       if self.should_take_photo():
         self.take_photo(frame)
