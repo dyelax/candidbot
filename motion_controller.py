@@ -66,6 +66,15 @@ def go_backward():
 
 
 PROXIMITY_THRESH = 100  # TODO: play with this number
-def proximity_warning():
-  # TODO: Return whether the distance from the proximity sensor is closer than PROXIMITY_THRESH
+def proximity_warning_center():
+  # TODO: Return whether the distance from the center proximity sensor is closer than PROXIMITY_THRESH
   pass
+
+def proximity_warning_left():
+  # TODO: Return whether the distance from the left proximity sensor is closer than PROXIMITY_THRESH
+  pass
+
+def proximity_warning_right():
+  # TODO: Return whether the distance from the right proximity sensor is closer than PROXIMITY_THRESH
+  pass
+

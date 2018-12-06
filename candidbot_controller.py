@@ -10,7 +10,8 @@ from vision.tracking.tracker import Tracker
 from vision.visualize import draw_tracks
 
 from motion_controller import \
-  turn_left, turn_right, turn_90, go_forward, go_backward, proximity_warning
+  turn_left, turn_right, turn_90, go_forward, go_backward, \
+  proximity_warning_center, proximity_warning_left, proximity_warning_right
 
 from drive_uploader import DriveUploader
 
@@ -96,9 +97,15 @@ class CandidbotController:
 
     target_x = self.tracker.get_centroid(self.target.box)[0]
 
-    if proximity_warning():
+    if proximity_warning_center():
       go_backward()
       turn_90()
+    elif proximity_warning_left():
+      go_backward()
+      turn_right()
+    elif proximity_warning_right():
+      go_backward()
+      turn_left()
     elif target_x < left_thresh:
       turn_right()
     elif target_x > right_thresh:
