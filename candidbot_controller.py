@@ -41,7 +41,7 @@ class CandidbotController:
     cv2.namedWindow(self.window_name, cv2.WND_PROP_FULLSCREEN)
     cv2.setWindowProperty(self.window_name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
-  def handle_frame(self, frame, debug_display=False):
+  def handle_frame(self, frame, debug_display=True):
     # If we aren't showing debug display, show the frame before detector and tracker annotations are
     # added. Otherwise, show the frame after they are added.
     if not debug_display:
