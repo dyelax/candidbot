@@ -30,9 +30,9 @@ class CandidbotController:
 
     # The threshold from the bottom of the frame inside which we consider a target close enough to
     # photograph
-    self.dist_thresh = self.frame_height / 8
+    self.dist_thresh = int(self.frame_height / 8)
     # The threshold on either side of the frame center inside which we consider an target "centered"
-    self.center_thresh = self.frame_width / 6
+    self.center_thresh = int(self.frame_width / 6)
 
     self.uploader = DriveUploader()
 
@@ -52,14 +52,14 @@ class CandidbotController:
 
     if debug_display:
       # Draw navigation regions
-      center_x = self.frame_width / 2
+      center_x = int(self.frame_width / 2)
       photo_region = (
         (0, self.frame_height - self.dist_thresh), (self.frame_width, self.frame_height))
       center_region = (
         (center_x - self.center_thresh, 0), (center_x + self.center_thresh, self.frame_height))
 
-      draw_region(frame, int(photo_region[0]), int(photo_region[1]), (0, 0, 255))
-      draw_region(frame, int(center_region[0]), int(center_region[1]), (0, 255, 0))
+      draw_region(frame, photo_region[0], photo_region[1], (0, 0, 255))
+      draw_region(frame, center_region[0], center_region[1], (0, 255, 0))
 
       # Draw green circle on target
       center = self.tracker.get_centroid(self.target.box)
