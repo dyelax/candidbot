@@ -3,6 +3,12 @@ import cv2
 import numpy as np
 from time import time
 
+classes = ["aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat", "chair", "cow",
+           "diningtable", "dog", "horse", "motorbike", "person", "pottedplant", "sheep", "sofa",
+           "train", "tvmonitor"]
+PERSON_ID = classes.index('person')
+
+
 if __name__ == '__main__':
   # grab a list of all NCS devices plugged in to USB
   print("[INFO] finding NCS devices...")
@@ -13,7 +19,7 @@ if __name__ == '__main__':
     print("[INFO] No devices found. Please plug in a NCS")
     quit()
 
-  # use the first device since this is a simple test script
+  # use the first device since this is a simsple test script
   print("[INFO] found {} devices. device0 will be used. "
         "opening device0...".format(len(devices)))
   device = mvnc.Device(devices[0])
