@@ -66,3 +66,15 @@ PROXIMITY_THRESH = 100  # TODO: play with this number
 def proximity_warning():
   # TODO: Return whether the distance from the proximity sensor is closer than PROXIMITY_THRESH
   pass
+
+go_forward()
+time.sleep(2)
+turn_right()
+turn_right()
+turn_right()
+time.sleep(2)
+turn_left()
+time.sleep(2)
+go_backward()
+time.sleep(2)
+turn_90()
