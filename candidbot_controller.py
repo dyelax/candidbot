@@ -42,6 +42,7 @@ class CandidbotController:
     cv2.setWindowProperty(self.window_name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
   def handle_frame(self, frame, debug_display=True):
+    print(frame.shape)
     # If we aren't showing debug display, show the frame before detector and tracker annotations are
     # added. Otherwise, show the frame after they are added.
     if not debug_display:
@@ -108,10 +109,13 @@ class CandidbotController:
 
     return dist < self.dist_thresh
 
-  def take_photo(self):
+  def take_photo(self, frame):
+    # The camera will already be active, so just save the current frame instead of "taking" another
+    # photo?
     # TODO: Photo countdown?
     file_path = os.path.join('/tmp', 'candidbot', 'photos', str(time()).replace('.', '-') + '.jpg')
-    self.camera.capture(file_path)
+    # self.camera.capture(file_path)  # This causes an error
+    cv2.imwrite(file_path, frame)
     # self.uploader.upload(file_path)  # TODO: Turn back on uploading
 
   def move_to_target(self):
