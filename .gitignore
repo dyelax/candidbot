@@ -4,6 +4,7 @@
 vision/detection/coco.names
 *.cfg
 *.weights
+*.names
 
 *.jpg
 test
