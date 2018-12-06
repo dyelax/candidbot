@@ -51,6 +51,16 @@ class CandidbotController:
     self.update_detector_and_tracker(frame)
 
     if debug_display:
+      # Draw navigation regions
+      center_x = int(self.frame_width / 2)
+      photo_region = (
+        (0, self.frame_height - self.dist_thresh), (self.frame_width, self.frame_height))
+      center_region = (
+        (center_x - self.center_thresh, 0), (center_x + self.center_thresh, self.frame_height))
+
+      draw_region(frame, photo_region[0], photo_region[1], (0, 0, 255))
+      draw_region(frame, center_region[0], center_region[1], (0, 255, 0))
+
       cv2.imshow(self.window_name, frame)
       cv2.waitKey(10)
 
