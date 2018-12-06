@@ -7,7 +7,7 @@ from picamera import PiCamera
 
 from vision.detection.yolov3.yolov3_detector import YOLOv3Detector
 from vision.tracking.tracker import Tracker
-from vision.visualize import draw_tracks
+from vision.visualize import draw_tracks, draw_region
 
 from motion_controller import \
   turn_left, turn_right, turn_90, go_forward, go_backward, \
@@ -45,6 +45,15 @@ class CandidbotController:
     # If we aren't showing debug display, show the frame before detector and tracker annotations are
     # added. Otherwise, show the frame after they are added.
     if not debug_display:
+      # Draw navigation regions
+      center_x = int(self.frame_width / 2)
+      photo_region = (
+        (0, self.frame_height - self.dist_thresh), (self.frame_width, self.frame_height))
+      center_region = (
+        (center_x - self.center_thresh, 0), (center_x + self.center_thresh, self.frame_height))
+
+      draw_region(frame, photo_region[0], photo_region[1], (0, 0, 255))
+      draw_region(frame, center_region[0], center_region[1], (0, 255, 0))
       cv2.imshow(self.window_name, frame)
       cv2.waitKey(10)
 
@@ -93,7 +102,8 @@ class CandidbotController:
     # print('Msc time:', misc_time)
 
   def should_take_photo(self):
-    box_bottom = self.target.box.top + self.target.box.height
+    left, top, width, height = self.target.box
+    box_bottom = top + height
     dist = self.frame_height - box_bottom
 
     return dist < self.dist_thresh
@@ -127,7 +137,6 @@ class CandidbotController:
     else:
       go_forward()
 
-
   def nav_continuous(self):
     # TODO: work directly with a file buffer instead of saving/loading to disk if this is a bottleneck
     for file_path in self.camera.capture_continuous('/tmp/{timestamp}.jpg'):
@@ -144,4 +153,3 @@ class CandidbotController:
       go_forward()
       turn_90()
       turn_90()
-
