@@ -13,11 +13,6 @@ from motion_controller import MotionController
 
 from drive_uploader import DriveUploader
 
-"""
-Decrease number of keep frames for tracker
-More fluid movement
-"""
-
 
 class CandidbotController:
   def __init__(self):
@@ -25,7 +20,8 @@ class CandidbotController:
     self.frame_width = 800
 
     self.detector = YOLOv3Detector()
-    self.tracker = Tracker(160, 30, 5, 100)
+    # self.tracker = Tracker(160, 30, 5, 100)  # TODO: Sub in higher max_frames_to_skip when we have a higher fps detector.
+    self.tracker = Tracker(160, 3, 5, 100)
     self.camera = PiCamera(resolution=(self.frame_width, self.frame_height))
     # camera.start_preview()  # Displays camera output
 
