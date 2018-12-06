@@ -120,6 +120,7 @@ class CandidbotController:
     file_path = os.path.join('saved-photos', str(time()).replace('.', '-') + '.jpg')
     # self.camera.capture(file_path)  # This causes an error
     cv2.imwrite(file_path, frame)
+    print('Saved photo to %s' % file_path)
     # self.uploader.upload(file_path)  # TODO: Turn back on uploading
 
   def move_to_target(self):
