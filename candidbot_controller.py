@@ -31,8 +31,6 @@ class CandidbotController:
 
     self.motion_controller = MotionController()
 
-    self.target = None  # The track we want to take a picture of
-
     # Spend max_search_frames looking for a target before moving to a new position
     self.search_frames = 0
     self.max_search_frames = 4
@@ -71,28 +69,27 @@ class CandidbotController:
       draw_region(frame, center_region[0], center_region[1], (0, 255, 0))
 
       # Draw green circle on target
-      if self.target:
-        left, top, width, height = self.target.box
+      if self.tracker.target:
+        left, top, width, height = self.tracker.target.box
         center_x = int(left + (width / 2))
         center_y = int(top + (height / 2))
-        cv2.circle(frame, (center_x, center_y), 20, (0, 255, 0), -1)
+        cv2.circle(frame, (center_x, center_y), 10, (0, 255, 0), -1)
 
       cv2.imshow(self.window_name, frame)
       cv2.waitKey(10)
 
-    if self.target is None:
-      if len(self.tracker.tracks) > 0:
-        self.target = np.random.choice(self.tracker.tracks)
-        self.search_frames = 0
-      elif self.search_frames > self.max_search_frames:
+    if self.tracker.target is None:
+      if self.search_frames > self.max_search_frames:
         self.motion_controller.turn_90()
         self.search_frames = 0
       else:
         self.search_frames += 1
     else:
+      self.search_frames = 0
+
       if self.should_take_photo():
         self.take_photo(frame)
-        self.target = None
+        self.tracker.target = None
       else:
         self.move_to_target()
 
@@ -123,7 +120,7 @@ class CandidbotController:
     # print('Msc time:', misc_time)
 
   def should_take_photo(self):
-    left, top, width, height = self.target.box
+    left, top, width, height = self.tracker.target.box
     box_bottom = top + height
     dist = self.frame_height - box_bottom
 
@@ -144,7 +141,7 @@ class CandidbotController:
     left_thresh = frame_center - self.center_thresh
     right_thresh = frame_center + self.center_thresh
 
-    target_x = self.tracker.get_centroid(self.target.box)[0]
+    target_x = self.tracker.get_centroid(self.tracker.target.box)[0]
 
     if self.motion_controller.proximity_warning_center():
       self.motion_controller.go_backward()

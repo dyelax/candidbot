@@ -53,6 +53,7 @@ class Tracker(object):
     self.max_trace_length = max_trace_length
     self.tracks = []
     self.trackIdCount = trackIdCount
+    self.target = None  # The track that is the target of the photo
 
   @staticmethod
   def get_centroid(box):
@@ -137,6 +138,9 @@ class Tracker(object):
     if len(del_tracks) > 0:  # only when skipped frame exceeds max
       for id in del_tracks:
         if id < len(self.tracks):
+          if self.tracks[id] == self.target:
+            self.target = None
+
           del self.tracks[id]
           del assignment[id]
         else:
@@ -177,3 +181,7 @@ class Tracker(object):
 
       self.tracks[i].trace.append(self.tracks[i].prediction)
       self.tracks[i].KF.lastResult = self.tracks[i].prediction
+
+    # If no current target, select a random one.
+    if self.target is None and len(self.tracks) > 0:
+      self.target = np.random.choice(self.tracks)
