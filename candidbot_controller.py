@@ -13,6 +13,10 @@ from motion_controller import MotionController
 
 from drive_uploader import DriveUploader
 
+# TODO: Faster object detector
+# TODO: Figure out how to run command via ssh and have window show up on pi display
+# TODO: Figure out how to exit full-screen display with just mouse
+
 
 class CandidbotController:
   def __init__(self):
