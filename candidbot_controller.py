@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from os import remove
+import os
 from time import time
 
 from picamera import PiCamera
@@ -98,9 +98,9 @@ class CandidbotController:
 
   def take_photo(self):
     # TODO: Photo countdown?
-    file_path = str(time()).replace('.', '-') + '.jpg'
+    file_path = os.path.join('/tmp', 'candidbot', 'photos', str(time()).replace('.', '-') + '.jpg')
     self.camera.capture(file_path)
-    self.uploader.upload(file_path)
+    # self.uploader.upload(file_path)  # TODO: Turn back on uploading
 
   def move_to_target(self):
     frame_center = self.frame_width / 2
@@ -131,7 +131,7 @@ class CandidbotController:
     for file_path in self.camera.capture_continuous('/tmp/{timestamp}.jpg'):
       frame = cv2.imread(file_path)
       self.handle_frame(frame)
-      remove(file_path)
+      os.remove(file_path)
 
   def nav_test(self):
     while True:
