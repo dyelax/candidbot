@@ -9,11 +9,14 @@ from vision.detection.yolov3.yolov3_detector import YOLOv3Detector
 from vision.tracking.tracker import Tracker
 from vision.visualize import draw_tracks, draw_region
 
-from motion_controller import \
-  turn_left, turn_right, turn_90, go_forward, go_backward, \
-  proximity_warning_center, proximity_warning_left, proximity_warning_right
+from motion_controller import MotionController
 
 from drive_uploader import DriveUploader
+
+"""
+Decrease number of keep frames for tracker
+More fluid movement
+"""
 
 
 class CandidbotController:
@@ -25,6 +28,8 @@ class CandidbotController:
     self.tracker = Tracker(160, 30, 5, 100)
     self.camera = PiCamera(resolution=(self.frame_width, self.frame_height))
     # camera.start_preview()  # Displays camera output
+
+    self.motion_controller = MotionController()
 
     self.target = None  # The track we want to take a picture of
 
@@ -80,7 +85,7 @@ class CandidbotController:
         self.target = np.random.choice(self.tracker.tracks)
         self.search_frames = 0
       elif self.search_frames > self.max_search_frames:
-        turn_90()
+        self.motion_controller.turn_90()
         self.search_frames = 0
       else:
         self.search_frames += 1
@@ -141,23 +146,23 @@ class CandidbotController:
 
     target_x = self.tracker.get_centroid(self.target.box)[0]
 
-    if proximity_warning_center():
-      go_backward()
-      turn_90()
-    elif proximity_warning_left():
-      go_backward()
-      turn_right()
-    elif proximity_warning_right():
-      go_backward()
-      turn_left()
+    if self.motion_controller.proximity_warning_center():
+      self.motion_controller.go_backward()
+      self.motion_controller.turn_90()
+    elif self.motion_controller.proximity_warning_left():
+      self.motion_controller.go_backward()
+      self.motion_controller.turn_right()
+    elif self.motion_controller.proximity_warning_right():
+      self.motion_controller.go_backward()
+      self.motion_controller.turn_left()
     elif target_x < left_thresh:
       # turn_right()
-      turn_left()
+      self.motion_controller.turn_left()
     elif target_x > right_thresh:
       # turn_left()
-      turn_right()
+      self.motion_controller.turn_right()
     else:
-      go_forward()
+      self.motion_controller.go_forward()
 
   def nav_continuous(self):
     # TODO: work directly with a file buffer instead of saving/loading to disk if this is a bottleneck
@@ -168,10 +173,10 @@ class CandidbotController:
 
   def nav_test(self):
     while True:
-      go_forward()
-      turn_left()
-      go_forward()
-      turn_right()
-      go_forward()
-      turn_90()
-      turn_90()
+      self.motion_controller.go_forward()
+      self.motion_controller.turn_left()
+      self.motion_controller.go_forward()
+      self.motion_controller.turn_right()
+      self.motion_controller.go_forward()
+      self.motion_controller.turn_90()
+      self.motion_controller.turn_90()
