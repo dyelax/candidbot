@@ -134,7 +134,7 @@ class CandidbotController:
     # self.camera.capture(file_path)  # This causes an error
     cv2.imwrite(file_path, frame)
     print('Saved photo to %s' % file_path)
-    # self.uploader.upload(file_path)  # TODO: Turn back on uploading
+    self.uploader.upload(file_path)
 
   def move_to_target(self):
     frame_center = self.frame_width / 2
