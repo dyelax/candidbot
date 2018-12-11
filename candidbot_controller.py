@@ -81,6 +81,7 @@ class CandidbotController:
     if self.tracker.target is None:
       print(self.search_frames)
       if self.search_frames > self.max_search_frames:
+        print('search too long')
         self.motion_controller.turn_90()
         self.search_frames = 0
       else:
@@ -153,13 +154,18 @@ class CandidbotController:
     # elif self.motion_controller.proximity_warning_right():
     #   self.motion_controller.go_backward()
     #   self.motion_controller.turn_left()
+
+
     if target_x < left_thresh:
       # turn_right()
+      print('move_to_target turn left')
       self.motion_controller.turn_left()
     elif target_x > right_thresh:
       # turn_left()
+      print('move_to_target turn right')
       self.motion_controller.turn_right()
     else:
+      print('move_to_target go forward')
       self.motion_controller.go_forward()
 
   def nav_continuous(self):
@@ -182,3 +188,4 @@ class CandidbotController:
       self.motion_controller.go_forward()
       self.motion_controller.turn_90()
       self.motion_controller.turn_90()
+      self.motion_controller.stop()
