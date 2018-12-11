@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import os
-from time import time
+import time
 
 from picamera import PiCamera
 
@@ -81,6 +81,7 @@ class CandidbotController:
     if self.tracker.target is None:
       print(self.search_frames)
       if self.search_frames > self.max_search_frames:
+        print('search too long')
         self.motion_controller.turn_90()
         self.search_frames = 0
       else:
@@ -95,20 +96,20 @@ class CandidbotController:
         self.move_to_target()
 
   def update_detector_and_tracker(self, frame):
-    all_start = time()
-    det_start = time()
+    all_start = time.time()
+    det_start = time.time()
     box_preds, _ = self.detector.detect_img(frame)
-    det_time = time() - det_start
+    det_time = time.time() - det_start
 
-    track_start = time()
+    track_start = time.time()
     self.tracker.Update(box_preds)
-    track_time = time() - track_start
+    track_time = time.time() - track_start
 
-    misc_start = time()
+    misc_start = time.time()
     draw_tracks(frame, self.tracker)
 
-    misc_time = time() - misc_start
-    all_time = time() - all_start
+    misc_time = time.time() - misc_start
+    all_time = time.time() - all_start
 
     print('-' * 30)
     print('All fps :', 1 / all_time)
@@ -131,7 +132,7 @@ class CandidbotController:
     # The camera will already be active, so just save the current frame instead of "taking" another
     # photo?
     # TODO: Photo countdown / graphics to show that a photo was taken?
-    file_path = os.path.join('saved-photos', str(time()).replace('.', '-') + '.jpg')
+    file_path = os.path.join('saved-photos', str(time.time()).replace('.', '-') + '.jpg')
     # self.camera.capture(file_path)  # This causes an error
     cv2.imwrite(file_path, frame)
     print('Saved photo to %s' % file_path)
@@ -153,13 +154,18 @@ class CandidbotController:
     # elif self.motion_controller.proximity_warning_right():
     #   self.motion_controller.go_backward()
     #   self.motion_controller.turn_left()
+
+
     if target_x < left_thresh:
       # turn_right()
+      print('move_to_target turn left')
       self.motion_controller.turn_left()
     elif target_x > right_thresh:
       # turn_left()
+      print('move_to_target turn right')
       self.motion_controller.turn_right()
     else:
+      print('move_to_target go forward')
       self.motion_controller.go_forward()
 
   def nav_continuous(self):
@@ -174,11 +180,26 @@ class CandidbotController:
         exit(0)
 
   def nav_test(self):
-    while True:
-      self.motion_controller.go_forward()
-      self.motion_controller.turn_left()
-      self.motion_controller.go_forward()
-      self.motion_controller.turn_right()
-      self.motion_controller.go_forward()
-      self.motion_controller.turn_90()
-      self.motion_controller.turn_90()
+    print('forward')
+    self.motion_controller.go_forward()
+    time.sleep(1)
+    print('left')
+    self.motion_controller.turn_left()
+    time.sleep(1)
+    print('forward')
+    self.motion_controller.go_forward()
+    time.sleep(1)
+    print('right')
+    self.motion_controller.turn_right()
+    time.sleep(1)
+    print('forward')
+    self.motion_controller.go_forward()
+    time.sleep(1)
+    print('90')
+    self.motion_controller.turn_90()
+    time.sleep(1)
+    print('90')
+    self.motion_controller.turn_90()
+    time.sleep(1)
+    print('stop')
+    self.motion_controller.stop()
