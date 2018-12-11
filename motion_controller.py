@@ -71,6 +71,10 @@ class MotionController:
     gpio.output(23, False)
     gpio.output(24, True)
 
+  def close(self):
+    self.stop()
+    gpio.cleanup()
+
 
   def proximity_warning_center(self):
     # TODO: Return whether the distance from the center proximity sensor is closer than PROXIMITY_THRESH

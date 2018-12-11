@@ -169,7 +169,8 @@ class CandidbotController:
         self.handle_frame(frame)
         os.remove(file_path)
       except KeyboardInterrupt:
-        self.motion_controller.stop()
+        self.motion_controller.close()
+        exit(0)
 
   def nav_test(self):
     while True:
