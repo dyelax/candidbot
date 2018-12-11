@@ -33,8 +33,8 @@ def turn_right():
 def turn_90():
   # TODO: Turn left 90 degrees
     init()
-    gpio.output(17, True)
-    gpio.output(22, False)
+    gpio.output(17, False)
+    gpio.output(22, True)
     gpio.output(23, False)
     gpio.output(24, True)
     time.sleep(8)
