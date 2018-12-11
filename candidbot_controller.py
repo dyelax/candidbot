@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import os
-from time import time
+import time
 
 from picamera import PiCamera
 
@@ -96,20 +96,20 @@ class CandidbotController:
         self.move_to_target()
 
   def update_detector_and_tracker(self, frame):
-    all_start = time()
-    det_start = time()
+    all_start = time.time()
+    det_start = time.time()
     box_preds, _ = self.detector.detect_img(frame)
-    det_time = time() - det_start
+    det_time = time.time() - det_start
 
-    track_start = time()
+    track_start = time.time()
     self.tracker.Update(box_preds)
-    track_time = time() - track_start
+    track_time = time.time() - track_start
 
-    misc_start = time()
+    misc_start = time.time()
     draw_tracks(frame, self.tracker)
 
-    misc_time = time() - misc_start
-    all_time = time() - all_start
+    misc_time = time.time() - misc_start
+    all_time = time.time() - all_start
 
     print('-' * 30)
     print('All fps :', 1 / all_time)
@@ -132,7 +132,7 @@ class CandidbotController:
     # The camera will already be active, so just save the current frame instead of "taking" another
     # photo?
     # TODO: Photo countdown / graphics to show that a photo was taken?
-    file_path = os.path.join('saved-photos', str(time()).replace('.', '-') + '.jpg')
+    file_path = os.path.join('saved-photos', str(time.time()).replace('.', '-') + '.jpg')
     # self.camera.capture(file_path)  # This causes an error
     cv2.imwrite(file_path, frame)
     print('Saved photo to %s' % file_path)
