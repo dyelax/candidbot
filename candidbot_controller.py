@@ -164,9 +164,12 @@ class CandidbotController:
   def nav_continuous(self):
     # TODO: work directly with a file buffer instead of saving/loading to disk if this is a bottleneck
     for file_path in self.camera.capture_continuous('/tmp/{timestamp}.jpg'):
-      frame = cv2.imread(file_path)
-      self.handle_frame(frame)
-      os.remove(file_path)
+      try:
+        frame = cv2.imread(file_path)
+        self.handle_frame(frame)
+        os.remove(file_path)
+      except KeyboardInterrupt:
+        self.motion_controller.stop()
 
   def nav_test(self):
     while True:
