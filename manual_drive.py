@@ -5,7 +5,8 @@ motion_controller = MotionController()
 
 while 1:
     try:
-        key = input('enter command')
+        key = input('enter command\n')
+        print(key)
         if key == 'f':
             motion_controller.go_forward()
         elif key == 'r':

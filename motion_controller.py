@@ -38,7 +38,7 @@ class MotionController:
 
   def turn_90(self):
     # Turn left 90 degrees
-    self.stop()
+    # self.stop()
 
     gpio.output(17, True)
     gpio.output(22, False)
@@ -46,7 +46,7 @@ class MotionController:
     gpio.output(24, True)
     time.sleep(2)
 
-    self.stop()
+    # self.stop()
 
   def stop(self):
     gpio.output(17, False)
