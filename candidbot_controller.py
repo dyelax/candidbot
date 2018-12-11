@@ -79,6 +79,7 @@ class CandidbotController:
       cv2.waitKey(10)
 
     if self.tracker.target is None:
+      print(self.search_frames)
       if self.search_frames > self.max_search_frames:
         self.motion_controller.turn_90()
         self.search_frames = 0
@@ -143,16 +144,16 @@ class CandidbotController:
 
     target_x = self.tracker.get_centroid(self.tracker.target.box)[0]
 
-    if self.motion_controller.proximity_warning_center():
-      self.motion_controller.go_backward()
-      self.motion_controller.turn_90()
-    elif self.motion_controller.proximity_warning_left():
-      self.motion_controller.go_backward()
-      self.motion_controller.turn_right()
-    elif self.motion_controller.proximity_warning_right():
-      self.motion_controller.go_backward()
-      self.motion_controller.turn_left()
-    elif target_x < left_thresh:
+    # if self.motion_controller.proximity_warning_center():
+    #   self.motion_controller.go_backward()
+    #   self.motion_controller.turn_90()
+    # elif self.motion_controller.proximity_warning_left():
+    #   self.motion_controller.go_backward()
+    #   self.motion_controller.turn_right()
+    # elif self.motion_controller.proximity_warning_right():
+    #   self.motion_controller.go_backward()
+    #   self.motion_controller.turn_left()
+    if target_x < left_thresh:
       # turn_right()
       self.motion_controller.turn_left()
     elif target_x > right_thresh:
