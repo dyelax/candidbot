@@ -68,6 +68,8 @@ class MotionController:
     gpio.output(24, False)
     time.sleep(1)
 
+    self.stop()
+
   def go_backward(self):
     # Make the wheels move the bot a little bit backward
     gpio.output(17, False)
