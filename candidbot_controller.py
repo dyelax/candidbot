@@ -17,9 +17,6 @@ from drive_uploader import DriveUploader
 # TODO: Figure out how to run command via ssh and have window show up on pi display
 # TODO: Figure out how to exit full-screen display with just mouse
 
-# TODO: remove all tracks after photo taken
-# TODO: only take photo if track detected on last one?
-
 
 class CandidbotController:
   def __init__(self):
