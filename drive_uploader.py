@@ -1,6 +1,7 @@
 from apiclient import discovery
 from httplib2 import Http
 from oauth2client import file, client, tools
+from os.path import join
 
 SCOPES = 'https://www.googleapis.com/auth/drive'
 
@@ -36,7 +37,7 @@ class DriveUploader:
   #   asyncio.run(get_res())
 
   def upload(self, file_path):
-    metadata = {'name': file_path}
+    metadata = {'name': join('candidbot_uploads', file_path)}
     res = self.drive.files().create(body=metadata, media_body=file_path).execute()
     if res:
       print('Uploaded "%s" (%s)' % (file_path, res['mimeType']))
