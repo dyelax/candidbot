@@ -17,7 +17,7 @@ class MotionController:
   def turn_left(self):
     self.init_wheels()
     # Make the wheels turn the bot a little bit left
-    self.stop()
+    # self.stop()
 
     gpio.output(17, True)
     gpio.output(22, False)
@@ -26,14 +26,14 @@ class MotionController:
     # time.sleep(0.2)
     time.sleep(2)
 
-    self.stop()
+    # self.stop()
     gpio.cleanup()
 
 
   def turn_right(self):
     self.init_wheels()
     # Make the wheels turn the bot a little bit right
-    self.stop()
+    # self.stop()
 
     gpio.output(17, False)
     gpio.output(22, True)
@@ -42,14 +42,14 @@ class MotionController:
     # time.sleep(0.2)
     time.sleep(2)
 
-    self.stop()
+    # self.stop()
     gpio.cleanup()
 
 
   def turn_90(self):
     self.init_wheels()
     # Turn left 90 degrees
-    self.stop()
+    # self.stop()
 
     gpio.output(17, True)
     gpio.output(22, False)
@@ -58,7 +58,7 @@ class MotionController:
     # time.sleep(2)
     time.sleep(10)
 
-    self.stop()
+    # self.stop()
     gpio.cleanup()
 
 
