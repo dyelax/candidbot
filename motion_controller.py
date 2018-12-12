@@ -10,9 +10,11 @@ class MotionController:
     gpio.setup(23, gpio.OUT)
     gpio.setup(24, gpio.OUT)
 
+    self.stop()
+
   def turn_left(self):
     # Make the wheels turn the bot a little bit left
-    self.stop()
+    # self.stop()
 
     gpio.output(17, True)
     gpio.output(22, False)
@@ -21,7 +23,7 @@ class MotionController:
     # time.sleep(0.2)
     time.sleep(2)
 
-    self.stop()
+    # self.stop()
 
   def turn_right(self):
     # Make the wheels turn the bot a little bit right
