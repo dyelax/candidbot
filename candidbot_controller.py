@@ -134,9 +134,9 @@ class CandidbotController:
     # Display flash
     flash_frame = frame.copy()
     cv2.putText(flash_frame, 'TAKING PHOTO', (100, 100), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255))
-    cv2.imshow(flash_frame)
+    cv2.imshow(self.window_name, flash_frame)
     cv2.waitKey(20)
-    cv2.imshow(frame)
+    cv2.imshow(self.window_name, frame)
 
     file_path = os.path.join('saved-photos', str(time.time()).replace('.', '-') + '.jpg')
     # self.camera.capture(file_path)  # This causes an error
