@@ -40,7 +40,7 @@ class CandidbotController:
 
     # The threshold from the bottom of the frame inside which we consider a target close enough to
     # photograph
-    self.dist_thresh = int(self.frame_height / 15)
+    self.dist_thresh = int(self.frame_height / 4)
     # The threshold on either side of the frame center inside which we consider an target "centered"
     self.center_thresh = int(self.frame_width / 6)
 
