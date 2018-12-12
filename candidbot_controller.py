@@ -51,7 +51,7 @@ class CandidbotController:
   def handle_frame(self, frame, debug_display=True):
     # If we aren't showing debug display, show the frame before detector and tracker annotations are
     # added. Otherwise, show the frame after they are added.
-    work_frame = frame.copy()[:, ::-1, :]
+    work_frame = frame.copy()
 
     self.update_detector_and_tracker(work_frame)
 
@@ -165,12 +165,10 @@ class CandidbotController:
 
     if target_x < left_thresh:
       # turn_right()
-      print('move_to_target turn left')
-      self.motion_controller.turn_left()
+      self.motion_controller.turn_right()
     elif target_x > right_thresh:
       # turn_left()
-      print('move_to_target turn right')
-      self.motion_controller.turn_right()
+      self.motion_controller.turn_left()
     else:
       print('move_to_target go forward')
       self.motion_controller.go_forward()
@@ -179,7 +177,7 @@ class CandidbotController:
     # TODO: work directly with a file buffer instead of saving/loading to disk if this is a bottleneck
     for file_path in self.camera.capture_continuous('/tmp/{timestamp}.jpg'):
       try:
-        frame = cv2.imread(file_path)
+        frame = cv2.imread(file_path)[:, ::-1, :]
         self.handle_frame(frame)
         os.remove(file_path)
       except KeyboardInterrupt:
