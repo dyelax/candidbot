@@ -25,7 +25,7 @@ class MotionController:
     gpio.output(23, False)
     gpio.output(24, True)
     # time.sleep(0.2)
-    time.sleep(2)
+    time.sleep(4)
 
     # self.stop()
     gpio.cleanup()
@@ -41,7 +41,7 @@ class MotionController:
     gpio.output(23, True)
     gpio.output(24, False)
     # time.sleep(0.2)
-    time.sleep(2)
+    time.sleep(4)
 
     # self.stop()
     gpio.cleanup()
@@ -69,7 +69,7 @@ class MotionController:
     gpio.output(22, False)
     gpio.output(23, False)
     gpio.output(24, False)
-    time.sleep(0.2)
+    time.sleep(4)
     gpio.cleanup()
 
 
@@ -80,6 +80,8 @@ class MotionController:
     gpio.output(22, False)
     gpio.output(23, True)
     gpio.output(24, False)
+    time.sleep(4)
+
     gpio.cleanup()
 
 
@@ -90,6 +92,9 @@ class MotionController:
     gpio.output(22, True)
     gpio.output(23, False)
     gpio.output(24, True)
+
+    time.sleep(4)
+
     gpio.cleanup()
 
 
