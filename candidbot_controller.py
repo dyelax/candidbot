@@ -132,6 +132,12 @@ class CandidbotController:
     # The camera will already be active, so just save the current frame instead of "taking" another
     # photo?
     # TODO: Photo countdown / graphics to show that a photo was taken?
+    # Display flash
+    flash = np.ones_like(frame) * 255
+    cv2.imshow(self.window_name, flash)
+    cv2.waitKey(100)
+    cv2.imshow(self.window_name, frame)
+
     file_path = os.path.join('saved-photos', str(time.time()).replace('.', '-') + '.jpg')
     # self.camera.capture(file_path)  # This causes an error
     cv2.imwrite(file_path, frame)
