@@ -40,7 +40,7 @@ class CandidbotController:
 
     # The threshold from the bottom of the frame inside which we consider a target close enough to
     # photograph
-    self.dist_thresh = int(self.frame_height / 3)
+    self.dist_thresh = int(self.frame_height / 15)
     # The threshold on either side of the frame center inside which we consider an target "centered"
     self.center_thresh = int(self.frame_width / 6)
 
@@ -63,8 +63,7 @@ class CandidbotController:
     if debug_display:
       # Draw navigation regions
       center_x = int(self.frame_width / 2)
-      photo_region = (
-        (0, self.frame_height - self.dist_thresh), (self.frame_width, self.frame_height))
+      photo_region = ((0, 0), (self.frame_width, self.dist_thresh))
       center_region = (
         (center_x - self.center_thresh, 0), (center_x + self.center_thresh, self.frame_height))
 
@@ -130,10 +129,9 @@ class CandidbotController:
     # print('Msc time:', misc_time)
 
   def should_take_photo(self):
-    box_center_y = self.tracker.get_centroid(self.tracker.target.box)[1][0]
-    dist = self.frame_height - box_center_y
+    _, top, _, _ = self.tracker.target.box
 
-    return dist < self.dist_thresh
+    return top < self.dist_thresh
 
   def take_photo(self, frame):
     # The camera will already be active, so just save the current frame instead of "taking" another
