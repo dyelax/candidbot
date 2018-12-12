@@ -37,7 +37,7 @@ class CandidbotController:
 
     # The threshold from the bottom of the frame inside which we consider a target close enough to
     # photograph
-    self.dist_thresh = int(self.frame_height / 20)
+    self.dist_thresh = int(self.frame_height / 10)
     # The threshold on either side of the frame center inside which we consider an target "centered"
     self.center_thresh = int(self.frame_width / 6)
 
@@ -122,9 +122,8 @@ class CandidbotController:
     # print('Msc time:', misc_time)
 
   def should_take_photo(self):
-    left, top, width, height = self.tracker.target.box
-    box_bottom = top + height
-    dist = self.frame_height - box_bottom
+    box_center_y = self.tracker.get_centroid(self.tracker.target.box)[1][0]
+    dist = self.frame_height - box_center_y
 
     return dist < self.dist_thresh
 
@@ -133,10 +132,7 @@ class CandidbotController:
     # photo?
     # TODO: Photo countdown / graphics to show that a photo was taken?
     # Display flash
-    flash = np.ones_like(frame) * 255
-    cv2.imshow(self.window_name, flash)
-    cv2.waitKey(100)
-    cv2.imshow(self.window_name, frame)
+    cv2.putText(frame, 'TAKING PHOTO', (100, 100), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255))
 
     file_path = os.path.join('saved-photos', str(time.time()).replace('.', '-') + '.jpg')
     # self.camera.capture(file_path)  # This causes an error
