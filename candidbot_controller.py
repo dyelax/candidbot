@@ -70,7 +70,7 @@ class CandidbotController:
         left, top, width, height = self.tracker.target.box
         center_x = int(left + (width / 2))
         center_y = int(top + (height / 2))
-        cv2.circle(frame, (center_x, center_y), 10, (0, 255, 0), -1)
+        cv2.circle(work_frame, (center_x, center_y), 10, (0, 255, 0), -1)
 
     cv2.imshow(self.window_name, work_frame)
     cv2.waitKey(10)
