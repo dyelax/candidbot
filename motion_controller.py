@@ -10,8 +10,6 @@ class MotionController:
     gpio.setup(23, gpio.OUT)
     gpio.setup(24, gpio.OUT)
 
-    self.PROXIMITY_THRESH = 100  # TODO: play with this number
-
   def turn_left(self):
     # Make the wheels turn the bot a little bit left
     self.stop()
@@ -40,7 +38,7 @@ class MotionController:
 
   def turn_90(self):
     # Turn left 90 degrees
-    # self.stop()
+    self.stop()
 
     gpio.output(17, True)
     gpio.output(22, False)
@@ -49,7 +47,7 @@ class MotionController:
     # time.sleep(2)
     time.sleep(10)
 
-    # self.stop()
+    self.stop()
 
   def stop(self):
     gpio.output(17, False)
