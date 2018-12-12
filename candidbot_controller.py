@@ -132,7 +132,11 @@ class CandidbotController:
     # photo?
     # TODO: Photo countdown / graphics to show that a photo was taken?
     # Display flash
-    cv2.putText(frame, 'TAKING PHOTO', (100, 100), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255))
+    flash_frame = frame.copy()
+    cv2.putText(flash_frame, 'TAKING PHOTO', (100, 100), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255))
+    cv2.imshow(flash_frame)
+    cv2.waitKey(20)
+    cv2.imshow(frame)
 
     file_path = os.path.join('saved-photos', str(time.time()).replace('.', '-') + '.jpg')
     # self.camera.capture(file_path)  # This causes an error
