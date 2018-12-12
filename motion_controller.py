@@ -57,7 +57,7 @@ class MotionController:
     gpio.output(23, False)
     gpio.output(24, True)
     # time.sleep(2)
-    time.sleep(2)
+    time.sleep(1)
 
     # self.stop()
     gpio.cleanup()
