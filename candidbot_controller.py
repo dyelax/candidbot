@@ -51,11 +51,9 @@ class CandidbotController:
   def handle_frame(self, frame, debug_display=True):
     # If we aren't showing debug display, show the frame before detector and tracker annotations are
     # added. Otherwise, show the frame after they are added.
-    if not debug_display:
-      cv2.imshow(self.window_name, frame)
-      cv2.waitKey(10)
+    work_frame = frame.copy()[:, ::-1, :]
 
-    self.update_detector_and_tracker(frame)
+    self.update_detector_and_tracker(work_frame)
 
     if debug_display:
       # Draw navigation regions
@@ -64,8 +62,8 @@ class CandidbotController:
       center_region = (
         (center_x - self.center_thresh, 0), (center_x + self.center_thresh, self.frame_height))
 
-      draw_region(frame, photo_region[0], photo_region[1], (0, 0, 255))
-      draw_region(frame, center_region[0], center_region[1], (0, 255, 0))
+      draw_region(work_frame, photo_region[0], photo_region[1], (0, 0, 255))
+      draw_region(work_frame, center_region[0], center_region[1], (0, 255, 0))
 
       # Draw green circle on target
       if self.tracker.target:
@@ -74,8 +72,8 @@ class CandidbotController:
         center_y = int(top + (height / 2))
         cv2.circle(frame, (center_x, center_y), 10, (0, 255, 0), -1)
 
-      cv2.imshow(self.window_name, frame)
-      cv2.waitKey(10)
+    cv2.imshow(self.window_name, work_frame)
+    cv2.waitKey(10)
 
     if self.tracker.target is None:
       print(self.search_frames)
@@ -136,7 +134,7 @@ class CandidbotController:
     # TODO: Photo countdown / graphics to show that a photo was taken?
     # Display flash
     flash_frame = frame.copy()
-    cv2.putText(flash_frame, 'TAKING PHOTO', (100, 100), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255))
+    cv2.putText(flash_frame, 'TAKING PHOTO', (200, 300), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255))
     cv2.imshow(self.window_name, flash_frame)
     cv2.waitKey(20)
     cv2.imshow(self.window_name, frame)
