@@ -18,6 +18,6 @@ while 1:
         elif key == 'b':
             motion_controller.go_backward()
     except KeyboardInterrupt:
-        motion_controller.close()
+        # motion_controller.close()
         exit(0)
 

@@ -4,8 +4,9 @@ import time
 
 class MotionController:
   def __init__(self):
-    self.init_wheels()
-    self.stop()
+    pass
+    # self.init_wheels()
+    # self.stop()
 
   def init_wheels(self):
     gpio.setmode(gpio.BCM)
