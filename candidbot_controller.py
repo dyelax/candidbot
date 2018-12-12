@@ -128,6 +128,9 @@ class CandidbotController:
     return dist < self.dist_thresh
 
   def take_photo(self, frame):
+    self.motion_controller.stop()
+    time.sleep(1)
+
     # The camera will already be active, so just save the current frame instead of "taking" another
     # photo?
     # TODO: Photo countdown / graphics to show that a photo was taken?
@@ -143,6 +146,8 @@ class CandidbotController:
     cv2.imwrite(file_path, frame)
     print('Saved photo to %s' % file_path)
     self.uploader.upload(file_path)
+
+    self.motion_controller.turn_90()
 
   def move_to_target(self):
     frame_center = self.frame_width / 2
