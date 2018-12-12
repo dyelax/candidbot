@@ -63,6 +63,10 @@ class Tracker(object):
 
     return np.array([[center_x], [center_y]])
 
+  def reset(self):
+    self.tracks = []
+    self.target = None
+
   def Update(self, boxes):
     """Update tracks vector using following steps:
         - Create tracks if no tracks vector found

@@ -17,6 +17,9 @@ from drive_uploader import DriveUploader
 # TODO: Figure out how to run command via ssh and have window show up on pi display
 # TODO: Figure out how to exit full-screen display with just mouse
 
+# TODO: remove all tracks after photo taken
+# TODO: only take photo if track detected on last one?
+
 
 class CandidbotController:
   def __init__(self):
@@ -25,7 +28,7 @@ class CandidbotController:
 
     self.detector = YOLOv3Detector()
     # self.tracker = Tracker(160, 30, 5, 100)  # TODO: Sub in higher max_frames_to_skip when we have a higher fps detector.
-    self.tracker = Tracker(250, 3, 5, 100)
+    self.tracker = Tracker(250, 2, 3, 100)
     self.camera = PiCamera(resolution=(self.frame_width, self.frame_height))
     # camera.start_preview()  # Displays camera output
 
@@ -90,8 +93,13 @@ class CandidbotController:
       self.search_frames = 0
 
       if self.should_take_photo():
+        self.motion_controller.stop()
+        time.sleep(1)
+
         self.take_photo(frame)
-        self.tracker.target = None
+
+        self.motion_controller.turn_90()
+        self.tracker.reset()
       else:
         self.move_to_target()
 
@@ -128,9 +136,6 @@ class CandidbotController:
     return dist < self.dist_thresh
 
   def take_photo(self, frame):
-    self.motion_controller.stop()
-    time.sleep(1)
-
     # The camera will already be active, so just save the current frame instead of "taking" another
     # photo?
     # TODO: Photo countdown / graphics to show that a photo was taken?
@@ -146,8 +151,6 @@ class CandidbotController:
     cv2.imwrite(file_path, frame)
     print('Saved photo to %s' % file_path)
     self.uploader.upload(file_path)
-
-    self.motion_controller.turn_90()
 
   def move_to_target(self):
     frame_center = self.frame_width / 2
